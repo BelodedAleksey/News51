@@ -57,6 +57,7 @@ func (s *Severpost) GetDailyNews() []model.New {
 
 	log.Infof("[SEVERPOST] Scrap started!")
 	c.OnHTML(`*`, func(e *colly.HTMLElement) {
+
 		//URL & HEADER
 		if e.Name == "h2" && e.Attr("class") != "m-3" {
 			if strings.Contains(e.ChildAttr("a", "href"), "/read/") && e.Text != "" && !stop {
@@ -70,7 +71,9 @@ func (s *Severpost) GetDailyNews() []model.New {
 		}
 
 		//Date
-		if e.Name == "span" && e.Attr("class") == "e-datetime" {
+		if e.Name == "span" &&
+			e.Attr("class") == "e-datetime" &&
+			!stop {
 			text := strings.Split(e.Text, "|")
 			if len(text) > 1 {
 				n.Date = strings.TrimSpace(text[1])
