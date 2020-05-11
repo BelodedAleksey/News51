@@ -1,4 +1,4 @@
-Bot scraps content of **Murmansk region's** news:      
+Bot `@MurmanNewsBot` scraps content of **Murmansk region's** news:      
 * https://hibiny.com  
 * https://hibinform.ru  
 * https://severpost.ru  
@@ -6,7 +6,7 @@ Bot scraps content of **Murmansk region's** news:
 and weather: 
 * https://pogoda51.ru/
      
-and post it to `@newsbot51` telegram channel   
+and post it to `@murmnews` telegram channel   
 _User_ can suggest news to _bot_, suggested news are sent to _admin_, _admin_ approve it and news are posted with notification to _user_ who suggested news.  
 
 Place `config.yaml` file in application directory with content:  
