@@ -68,8 +68,7 @@ func Init() {
 	})*/
 }
 
-//GetEntry f
-func GetEntry(user *User) (*User, error) {
+func getEntry(user *User) (*User, error) {
 	returnentry := User{}
 	err := db.View(func(tx *buntdb.Tx) error {
 		val, err := tx.Get(user.ChatID)
@@ -91,8 +90,9 @@ func GetEntry(user *User) (*User, error) {
 	return &returnentry, nil
 }
 
-func getOrCreateEntry(user *User) (*User, error) {
-	entry, err := GetEntry(user)
+//GetOrCreateEntry f
+func GetOrCreateEntry(user *User) (*User, error) {
+	entry, err := getEntry(user)
 	if err == buntdb.ErrNotFound {
 		err = addEntry(user)
 		if err != nil {
@@ -120,7 +120,7 @@ func addEntry(user *User) error {
 
 //UpdateEntry f
 func UpdateEntry(user *User) error {
-	entry, err := getOrCreateEntry(user)
+	entry, err := GetOrCreateEntry(user)
 	if err != nil {
 		return err
 	}

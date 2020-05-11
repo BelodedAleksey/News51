@@ -48,7 +48,7 @@ func (s *Severpost) GetDailyNews() []model.New {
 					stop = true
 					return
 				}
-				n.Header = e.Text
+				//n.Header = e.Text
 			}
 		}
 
@@ -62,11 +62,12 @@ func (s *Severpost) GetDailyNews() []model.New {
 					stop = true
 					return
 				}
+				news = append(news, n)
 			}
 		}
 
 		//Image URL
-		if e.Name == "a" &&
+		/*if e.Name == "a" &&
 			strings.HasPrefix(e.Attr("href"), "/read/") &&
 			e.Attr("target") != "_blank" &&
 			e.Attr("class") == "" &&
@@ -80,7 +81,7 @@ func (s *Severpost) GetDailyNews() []model.New {
 				n.Content = p.Text()
 				news = append(news, n)
 			}
-		}
+		}*/
 	})
 
 	c.OnError(func(r *colly.Response, err error) {

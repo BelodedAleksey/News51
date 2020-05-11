@@ -38,9 +38,9 @@ func (h *Hibiny) GetDailyNews() []model.New {
 	c := colly.NewCollector()
 	log.Infof("[HIBINY] Scrap started!")
 	c.OnHTML(`*`, func(e *colly.HTMLElement) {
-		if strings.Contains(e.Attr(`src`), `images/news`) && !stop {
+		/*if strings.Contains(e.Attr(`src`), `images/news`) && !stop {
 			n.ImageURL = `https://www.hibiny.com` + e.Attr(`src`)
-		}
+		}*/
 		if strings.Contains(e.Attr(`href`), `/news/archive`) && e.Text != "" && !stop {
 			n.URL = "https://www.hibiny.com" + e.Attr(`href`)
 			if n.URL == h.lastUpdate {
@@ -48,13 +48,13 @@ func (h *Hibiny) GetDailyNews() []model.New {
 				return
 			}
 
-			n.Header = e.Text
+			//n.Header = e.Text
 			p := e.DOM.Parent()
 			for i := 0; i < 7; i++ {
 				p = p.Parent()
 			}
 			n.Date = p.Find(`td.p10`).Text()
-			n.Content = p.Find(`td.p`).Text()
+			//n.Content = p.Find(`td.p`).Text()
 			news = append(news, n)
 		}
 	})

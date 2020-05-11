@@ -57,14 +57,20 @@ func PostNews(news []model.New, s NewsSite) {
 			if n.URL == s.GetLastUpdate() {
 				break
 			}
-			message := fmt.Sprintf(
+			/*message := fmt.Sprintf(
 				"*%s*\n_%s_\n%s\n%s\n",
 				n.Header,
 				n.Date,
 				n.Content,
 				n.URL,
 			)
-			tg.SendMessage(message, n.ImageURL)
+			tg.SendMessage(message, n.ImageURL)*/
+			message := fmt.Sprintf(
+				"*%s*\n%s\n",
+				n.Date,
+				n.URL,
+			)
+			tg.SendMessage(message, "")
 		}
 		//write last update new
 		s.SetLastUpdate(news[0].URL)

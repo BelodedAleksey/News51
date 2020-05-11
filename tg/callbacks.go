@@ -13,9 +13,10 @@ import (
 func callbackHandler(bot *tgbotapi.BotAPI, callback *tgbotapi.CallbackQuery) {
 	var message, logData string
 	//get user
-	user, err := db.GetEntry(
+	user, err := db.GetOrCreateEntry(
 		&db.User{
 			ChatID: strconv.FormatInt(callback.Message.Chat.ID, 10),
+			Name:   callback.Message.From.FirstName,
 		})
 	if err != nil {
 		log.LogRequestFile(fmt.Sprintf("[DB]: %s", err))

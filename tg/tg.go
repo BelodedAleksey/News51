@@ -76,7 +76,7 @@ func checkPhotos(bot *tgbotapi.BotAPI) {
 						checkRetry(err)
 					}
 
-					user, err := db.GetEntry(
+					user, err := db.GetOrCreateEntry(
 						&db.User{
 							ChatID: strconv.FormatInt(k, 10),
 						})

@@ -103,9 +103,10 @@ func defaultCmd(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 
 		queryID := postQuery(bot, message.From.FirstName)
 
-		user, err := db.GetEntry(
+		user, err := db.GetOrCreateEntry(
 			&db.User{
 				ChatID: strconv.FormatInt(message.Chat.ID, 10),
+				Name:   message.From.FirstName,
 			})
 		if err != nil {
 			log.LogRequestFile(fmt.Sprintf("[DB]: %s", err))

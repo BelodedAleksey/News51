@@ -60,6 +60,7 @@ func SendMessage(message, pic string) {
 	bot.Debug = false
 	log.Infof("Authorized on account %s", bot.Self.UserName)
 
+	//post picture
 	if pic != "" {
 		photo := tgbotapi.NewPhotoUpload(*c.TGChatID, nil)
 		photo.FileID = pic

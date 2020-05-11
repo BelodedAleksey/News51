@@ -49,7 +49,7 @@ func (h *Hibinform) GetDailyNews() []model.New {
 	log.Infof("[HIBINFORM] Scrap started!")
 
 	c.OnHTML(`*`, func(e *colly.HTMLElement) {
-		//Header & ImageURL
+		//Header & URL & ImageURL
 		if strings.Contains(e.Attr("class"), "entry-header") &&
 			!stop {
 			n.URL = e.ChildAttr("a", "href")
@@ -57,8 +57,8 @@ func (h *Hibinform) GetDailyNews() []model.New {
 				stop = true
 				return
 			}
-			n.Header = e.ChildText("a")
-			n.ImageURL = e.ChildAttr("img", "src")
+			//n.Header = e.ChildText("a")
+			//n.ImageURL = e.ChildAttr("img", "src")
 		}
 
 		//Date
@@ -73,13 +73,14 @@ func (h *Hibinform) GetDailyNews() []model.New {
 		if strings.Contains(e.Attr("class"), "publish-time") &&
 			!stop {
 			n.Date += " " + strings.TrimSpace(e.Text)
+			news = append(news, n)
 		}
 		//Content
-		if strings.Contains(e.Attr("class"), "entry-content") &&
+		/*if strings.Contains(e.Attr("class"), "entry-content") &&
 			!stop {
 			n.Content = e.ChildText("p")
 			news = append(news, n)
-		}
+		}*/
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
