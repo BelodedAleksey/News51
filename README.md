@@ -1,7 +1,8 @@
-Bot scraps content of **Murmansk region's** news:     
-    * https://hibiny.com  
-    * https://hibinform.ru  
-    * https://severpost.ru  
+Bot scraps content of **Murmansk region's** news:      
+* https://hibiny.com  
+* https://hibinform.ru  
+* https://severpost.ru  
+     
 and post it to `@newsbot51` telegram channel   
 _User_ can suggest news to _bot_, suggested news are sent to _admin_, _admin_ approve it and news are posted with notification to _user_ who suggested news.  
 
