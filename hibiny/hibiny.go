@@ -2,6 +2,7 @@ package hibiny
 
 import (
 	"fmt"
+	"news/db"
 	"news/log"
 	"news/model"
 	"strings"
@@ -15,6 +16,16 @@ type Hibiny struct {
 	lastUpdate string
 }
 
+//Init f
+func (h *Hibiny) Init() {
+	var err error
+	h.lastUpdate, err = db.GetLastNew("hibiny")
+	if err != nil {
+		log.Errorf("[DB NEWS]: %s", err)
+		log.LogRequestFile(fmt.Sprintf("[DB NEWS]: %s", err))
+	}
+}
+
 //GetLastUpdate f
 func (h *Hibiny) GetLastUpdate() string {
 	return h.lastUpdate
@@ -22,8 +33,14 @@ func (h *Hibiny) GetLastUpdate() string {
 
 //SetLastUpdate f
 func (h *Hibiny) SetLastUpdate(u string) {
-	h.lastUpdate = u
-	log.Infof("[HIBINY LAST URL] %s", u)
+	err := db.UpdateLastNew("hibiny", u)
+	if err != nil {
+		log.Errorf("[DB NEWS]: %s", err)
+		log.LogRequestFile(fmt.Sprintf("[DB NEWS]: %s", err))
+	} else {
+		h.lastUpdate = u
+		log.Infof("[HIBINY LAST URL] %s", u)
+	}
 }
 
 //GetDailyNews func

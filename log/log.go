@@ -156,7 +156,8 @@ func LogRequestFile(data string) {
 			file, _ = os.OpenFile(Options.LogRequestPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		}
 
-		data += "\n"
+		//add time
+		data = time.Now().UTC().Format(DateFormat) + " " + data + "\n"
 		if _, err := file.Write([]byte(data)); err != nil {
 			Debugf("[Log File] %s", err)
 		}

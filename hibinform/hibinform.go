@@ -2,6 +2,7 @@ package hibinform
 
 import (
 	"fmt"
+	"news/db"
 	"news/log"
 	"strings"
 	"time"
@@ -22,6 +23,16 @@ var (
 	}
 )
 
+//Init f
+func (h *Hibinform) Init() {
+	var err error
+	h.lastUpdate, err = db.GetLastNew("hibinform")
+	if err != nil {
+		log.Errorf("[DB NEWS]: %s", err)
+		log.LogRequestFile(fmt.Sprintf("[DB NEWS]: %s", err))
+	}
+}
+
 //GetLastUpdate f
 func (h *Hibinform) GetLastUpdate() string {
 	return h.lastUpdate
@@ -29,8 +40,14 @@ func (h *Hibinform) GetLastUpdate() string {
 
 //SetLastUpdate f
 func (h *Hibinform) SetLastUpdate(u string) {
-	h.lastUpdate = u
-	log.Infof("[HIBINFORM LAST URL] %s", u)
+	err := db.UpdateLastNew("hibinform", u)
+	if err != nil {
+		log.Errorf("[DB NEWS]: %s", err)
+		log.LogRequestFile(fmt.Sprintf("[DB NEWS]: %s", err))
+	} else {
+		h.lastUpdate = u
+		log.Infof("[HIBINFORM LAST URL] %s", u)
+	}
 }
 
 //GetDailyNews func

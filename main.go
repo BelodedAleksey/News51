@@ -29,6 +29,7 @@ var (
 
 //NewsSite t
 type NewsSite interface {
+	Init()
 	GetDailyNews() []model.New
 	GetLastUpdate() string
 	SetLastUpdate(string)
@@ -82,6 +83,12 @@ func UpdateNews() {
 	ticker := time.NewTicker(time.Minute)
 	wPosted := false
 
+	//Init lastUpdates from db
+	for _, s := range sites {
+		s.Init()
+	}
+
+	//Update cycle
 	for {
 		select {
 		case t := <-ticker.C:

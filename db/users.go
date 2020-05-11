@@ -28,7 +28,7 @@ type Post struct {
 }
 
 var (
-	db *buntdb.DB
+	dbUsers *buntdb.DB
 	//map with key = message id
 	Messages     = map[int]*Post{}
 	LockMessages = sync.RWMutex{}
@@ -36,20 +36,36 @@ var (
 
 //Init func
 func Init() {
-	//init database
+	//init database users
 	var err error
-	db, err = buntdb.Open("users.db")
+	dbUsers, err = buntdb.Open("users.db")
 	if err != nil {
-		log.LogRequestFile(fmt.Sprintf("[DB]: %s", err))
+		log.LogRequestFile(fmt.Sprintf("[DB Users]: %s", err))
 		log.Fatal(err)
 	}
 
-	err = db.SetConfig(buntdb.Config{
+	err = dbUsers.SetConfig(buntdb.Config{
 		SyncPolicy: buntdb.EverySecond,
 	})
 
 	if err != nil {
-		log.LogRequestFile(fmt.Sprintf("[DB]: %s", err))
+		log.LogRequestFile(fmt.Sprintf("[DB Users]: %s", err))
+		log.Fatal(err)
+	}
+
+	//Init database news
+	dbNews, err = buntdb.Open("news.db")
+	if err != nil {
+		log.LogRequestFile(fmt.Sprintf("[DB News]: %s", err))
+		log.Fatal(err)
+	}
+
+	err = dbNews.SetConfig(buntdb.Config{
+		SyncPolicy: buntdb.EverySecond,
+	})
+
+	if err != nil {
+		log.LogRequestFile(fmt.Sprintf("[DB News]: %s", err))
 		log.Fatal(err)
 	}
 
@@ -70,7 +86,7 @@ func Init() {
 
 func getEntry(user *User) (*User, error) {
 	returnentry := User{}
-	err := db.View(func(tx *buntdb.Tx) error {
+	err := dbUsers.View(func(tx *buntdb.Tx) error {
 		val, err := tx.Get(user.ChatID)
 		if err != nil {
 			return err
@@ -110,12 +126,12 @@ func addEntry(user *User) error {
 		return err
 	}
 
-	err = db.Update(func(tx *buntdb.Tx) error {
+	err = dbUsers.Update(func(tx *buntdb.Tx) error {
 		_, _, err := tx.Set(user.ChatID, string(b), nil)
 		return err
 	})
 
-	return nil
+	return err
 }
 
 //UpdateEntry f

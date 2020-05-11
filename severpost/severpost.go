@@ -2,6 +2,7 @@ package severpost
 
 import (
 	"fmt"
+	"news/db"
 	"news/log"
 	"strings"
 	"time"
@@ -16,6 +17,16 @@ type Severpost struct {
 	lastUpdate string
 }
 
+//Init f
+func (s *Severpost) Init() {
+	var err error
+	s.lastUpdate, err = db.GetLastNew("severpost")
+	if err != nil {
+		log.Errorf("[DB NEWS]: %s", err)
+		log.LogRequestFile(fmt.Sprintf("[DB NEWS]: %s", err))
+	}
+}
+
 //GetLastUpdate f
 func (s *Severpost) GetLastUpdate() string {
 	return s.lastUpdate
@@ -23,8 +34,14 @@ func (s *Severpost) GetLastUpdate() string {
 
 //SetLastUpdate f
 func (s *Severpost) SetLastUpdate(u string) {
-	s.lastUpdate = u
-	log.Infof("[SEVERPOST LAST URL] %s", u)
+	err := db.UpdateLastNew("severpost", u)
+	if err != nil {
+		log.Errorf("[DB NEWS]: %s", err)
+		log.LogRequestFile(fmt.Sprintf("[DB NEWS]: %s", err))
+	} else {
+		s.lastUpdate = u
+		log.Infof("[SEVERPOST LAST URL] %s", u)
+	}
 }
 
 //GetDailyNews func
