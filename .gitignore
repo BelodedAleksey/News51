@@ -1,0 +1,8 @@
+*.exe
+*.log
+*.txt
+*.yaml
+*.json
+*.mod
+*.sum
+*.db
