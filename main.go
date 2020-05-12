@@ -95,13 +95,14 @@ func UpdateNews() {
 			log.Infof("[UPDATE]: Started")
 
 			//Weather
+			//frankfurt time = -3 hours
 			h, m, _ := t.Clock()
-			if h == 6 && m > 30 && !wPosted {
+			if h == 4 && m > 00 && !wPosted {
 				PostWeather()
 				wPosted = true
 			}
 			//reset
-			if h == 0 && m > 30 {
+			if h == 21 && m > 00 {
 				wPosted = false
 			}
 
