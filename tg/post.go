@@ -75,15 +75,18 @@ func SendMessage(message, pic string) {
 		}
 	}
 
-	msg := tgbotapi.NewMessageToChannel(*c.TGChannel, message)
-	msg.ParseMode = "markdown"
+	if message != "" {
+		msg := tgbotapi.NewMessageToChannel(*c.TGChannel, message)
+		msg.ParseMode = "markdown"
 
-	_, err = bot.Send(msg)
-	if err != nil {
-		log.LogRequestFile(fmt.Sprintf("[TELEGRAM]: %s", err))
-		log.Errorf("[TELEGRAM]: %s", err)
-		checkRetry(err)
+		_, err = bot.Send(msg)
+		if err != nil {
+			log.LogRequestFile(fmt.Sprintf("[TELEGRAM]: %s", err))
+			log.Errorf("[TELEGRAM]: %s", err)
+			checkRetry(err)
+		}
 	}
+
 	http.DefaultTransport = &http.Transport{}
 }
 
